@@ -61,6 +61,7 @@ export class AuthService {
     const url = `${this.baseUrl}/auth/check-token`;
     const token = localStorage.getItem('token');
     if (!token) {
+      this.logout();
       return of(false)
     }
     const headers = new HttpHeaders()
@@ -79,6 +80,13 @@ export class AuthService {
         return of(false)
       })
     )
+  }
+
+
+  public logout() {
+    localStorage.removeItem('token');
+    this._currentUser.set(null);
+    this._authStatus.set(AuthStatus.noAuthenticated);
   }
 
 
